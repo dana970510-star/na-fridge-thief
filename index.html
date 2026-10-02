@@ -1,10 +1,1060 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff7e8">
+<title>냉장고털이범</title>
+
+<style>
+:root{
+  --bg:#fff7e8;
+  --card:#ffffff;
+  --ink:#27231f;
+  --muted:#766f67;
+  --accent:#ff8a3d;
+  --line:#eee1cf;
+  --good:#3a9d5d;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+  line-height:1.6;
+}
+
+button,
+input{
+  font-family:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.wrap{
+  max-width:760px;
+  margin:auto;
+  padding:22px 18px 60px;
+}
+
+/* =========================
+   상단
+========================= */
+
+.hero{
+  text-align:center;
+  padding:28px 8px 20px;
+}
+
+.logo{
+  font-size:58px;
+}
+
+.badge{
+  display:inline-block;
+  background:#ffe0a8;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+}
+
+h1{
+  font-size:42px;
+  line-height:1.1;
+  margin:12px 0 8px;
+}
+
+.hero p{
+  margin:0;
+  color:var(--muted);
+  font-size:16px;
+}
+
+/* =========================
+   카드
+========================= */
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 8px 30px rgba(80,50,20,.06);
+}
+
+h2{
+  font-size:22px;
+  margin:0 0 8px;
+}
+
+.help{
+  font-size:14px;
+  color:var(--muted);
+  margin:0 0 15px;
+}
+
+/* =========================
+   재료 입력
+========================= */
+
+.inputrow{
+  display:flex;
+  gap:9px;
+}
+
+input{
+  flex:1;
+  min-width:0;
+  border:2px solid var(--line);
+  border-radius:15px;
+  padding:14px;
+  font-size:16px;
+  outline:none;
+  background:#fff;
+}
+
+input:focus{
+  border-color:var(--accent);
+}
+
+.add{
+  background:#f1ece4;
+  color:var(--ink);
+  border-radius:15px;
+  padding:13px 16px;
+  font-size:15px;
+  font-weight:800;
+}
+
+.primary{
+  width:100%;
+  background:var(--accent);
+  color:#fff;
+  margin-top:13px;
+  border-radius:15px;
+  padding:14px 16px;
+  font-size:17px;
+  font-weight:800;
+}
+
+.random{
+  width:100%;
+  background:#fff0cf;
+  color:#704600;
+  margin-top:9px;
+  border-radius:15px;
+  padding:13px 16px;
+  font-size:15px;
+  font-weight:800;
+}
+
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+.tag{
+  background:#fff0cf;
+  border:1px solid #f3d49c;
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:14px;
+}
+
+.tag button{
+  padding:0 0 0 7px;
+  background:none;
+  font-size:16px;
+  color:#9a6b35;
+}
+
+/* =========================
+   검색 결과
+========================= */
+
+.results{
+  margin-top:20px;
+  display:grid;
+  gap:14px;
+}
+
+.result{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:20px;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:rgba(255,138,61,.15);
+  box-shadow:0 5px 18px rgba(80,50,20,.04);
+  transition:transform .15s,box-shadow .15s;
+}
+
+.result:hover{
+  transform:translateY(-2px);
+  box-shadow:0 9px 25px rgba(80,50,20,.09);
+}
+
+.result:active{
+  transform:scale(.99);
+}
+
+.result h3{
+  font-size:21px;
+  margin:0;
+}
+
+.result-missing{
+  color:#a65d24;
+  font-size:14px;
+  margin-top:10px;
+}
+
+.result-all{
+  color:var(--good);
+  font-size:14px;
+  font-weight:800;
+  margin-top:10px;
+}
+
+.result-info{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:10px;
+}
+
+.result-info span{
+  background:#f7f2ea;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:13px;
+}
+
+.result-arrow{
+  text-align:right;
+  color:#999;
+  font-size:13px;
+  margin-top:10px;
+}
+
+/* =========================
+   상세 화면
+========================= */
+
+.detail-page{
+  display:none;
+  margin-top:20px;
+}
+
+.detail-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(80,50,20,.06);
+}
+
+.detail-image{
+  width:100%;
+  height:280px;
+  background:linear-gradient(135deg,#fff0cf,#ffe0a8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.detail-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.image-placeholder{
+  text-align:center;
+  color:#9a7650;
+}
+
+.food-emoji{
+  display:block;
+  font-size:80px;
+  line-height:1;
+  margin-bottom:10px;
+}
+
+.image-placeholder p{
+  margin:0;
+  font-size:13px;
+}
+
+.detail-content{
+  padding:22px;
+}
+
+.detail-title{
+  font-size:30px;
+  line-height:1.3;
+  margin:0 0 12px;
+}
+
+.detail-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.detail-meta span{
+  background:#f7f2ea;
+  border-radius:999px;
+  padding:6px 11px;
+  font-size:13px;
+}
+
+.detail-section{
+  margin-top:24px;
+}
+
+.detail-section h3{
+  font-size:20px;
+  margin:0 0 10px;
+}
+
+.ingredients-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.ingredients-list li{
+  background:#fff0cf;
+  border:1px solid #f3d49c;
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:14px;
+}
+
+.steps{
+  margin:0;
+  padding-left:24px;
+}
+
+.steps li{
+  margin-bottom:10px;
+}
+
+.back-button{
+  width:100%;
+  background:#f1ece4;
+  color:var(--ink);
+  margin-top:24px;
+  border-radius:15px;
+  padding:14px;
+  font-size:16px;
+  font-weight:800;
+}
+
+/* =========================
+   배달 음식
+========================= */
+
+.delivery-card{
+  margin-top:16px;
+}
+
+.delivery-btn{
+  background:#6c63ff!important;
+}
+
+.delivery-result{
+  margin-top:14px;
+  background:#f7f3ff;
+  border-radius:18px;
+  padding:16px;
+}
+
+.delivery-result h3{
+  margin:0 0 5px;
+  font-size:20px;
+}
+
+.delivery-result p{
+  margin:4px 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:20px;
+}
+
+.note{
+  margin-top:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* =========================
+   모바일
+========================= */
+
+@media(max-width:520px){
+
+  h1{
+    font-size:36px;
+  }
+
+  .logo{
+    font-size:50px;
+  }
+
+  .inputrow{
+    flex-wrap:wrap;
+  }
+
+  .inputrow input{
+    flex-basis:100%;
+  }
+
+  .add{
+    width:100%;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .detail-image{
+    height:230px;
+  }
+
+  .detail-title{
+    font-size:26px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="wrap">
+
+<!-- =========================
+     메인
+========================= -->
+
+<section class="hero">
+
+  <div class="logo">🥷</div>
+
+  <span class="badge">냉장고 털기 전문</span>
+
+  <h1>냉장고털이범</h1>
+
+  <p>
+    냉장고 속 재료를 입력하면<br>
+    만들 수 있는 요리를 찾아드립니다.
+  </p>
+
+</section>
+
+
+<!-- =========================
+     재료 입력
+========================= -->
+
+<section class="card">
+
+  <h2>🥕 냉장고에 뭐가 있나요?</h2>
+
+  <p class="help">
+    재료를 하나씩 입력해 주세요. 예: 계란, 양배추, 두부
+  </p>
+
+  <div class="inputrow">
+
+    <input
+      id="ingredientInput"
+      placeholder="재료를 입력하세요"
+      autocomplete="off"
+    >
+
+    <button
+      type="button"
+      class="add"
+      id="addButton"
+    >
+      ➕ 추가
+    </button>
+
+  </div>
+
+  <div id="tags" class="tags"></div>
+
+  <button
+    type="button"
+    class="primary"
+    id="findButton"
+  >
+    🔪 냉장고 털기!
+  </button>
+
+  <button
+    type="button"
+    class="random"
+    id="randomButton"
+  >
+    🎲 아무거나 털어줘!
+  </button>
+
+</section>
+
+
+<!-- =========================
+     배달 음식
+========================= -->
+
+<section class="card delivery-card">
+
+  <h2>🍕 오늘은 요리하기 싫어요</h2>
+
+  <p class="help">
+    그럴 땐 냉장고털이범이 배달 메뉴도 골라드립니다.
+  </p>
+
+  <button
+    type="button"
+    id="deliveryBtn"
+    class="primary delivery-btn"
+  >
+    🛵 배달음식 추천받기
+  </button>
+
+  <div id="deliveryResult"></div>
+
+</section>
+
+
+<!-- =========================
+     요리 목록
+========================= -->
+
+<section id="results" class="results"></section>
+
+
+<!-- =========================
+     요리 상세
+========================= -->
+
+<section id="detailPage" class="detail-page">
+
+  <div class="detail-card">
+
+    <div id="detailImage" class="detail-image"></div>
+
+    <div class="detail-content">
+
+      <h2 id="detailTitle" class="detail-title"></h2>
+
+      <div id="detailMeta" class="detail-meta"></div>
+
+      <div class="detail-section">
+
+        <h3>🥕 필요한 재료</h3>
+
+        <ul
+          id="detailIngredients"
+          class="ingredients-list"
+        ></ul>
+
+      </div>
+
+      <div class="detail-section">
+
+        <h3>👩‍🍳 조리 방법</h3>
+
+        <ol
+          id="detailSteps"
+          class="steps"
+        ></ol>
+
+      </div>
+
+      <button
+        type="button"
+        id="backButton"
+        class="back-button"
+      >
+        ← 요리 목록으로 돌아가기
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<p class="note">
+  ※ 현재 버전은 미리 등록된 요리 데이터로 추천합니다.
+</p>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   요리 데이터
+   image:"" 부분은 나중에 실제 음식 사진을 넣을 자리
+===================================================== */
+
+const recipes = [
+
+  {
+    name:"참치 계란볶음",
+    image:"",
+    emoji:"🍳",
+    ingredients:["참치","계란","양파","대파"],
+    time:"10분",
+    level:"쉬움",
+    steps:[
+      "계란을 풀어준다.",
+      "양파와 대파를 먹기 좋게 썬다.",
+      "팬에 양파와 대파를 볶고 참치를 넣는다.",
+      "계란물을 넣고 익혀준다.",
+      "소금이나 간장으로 간을 맞춘다."
+    ]
+  },
+
+  {
+    name:"두부 계란부침",
+    image:"",
+    emoji:"🥚",
+    ingredients:["두부","계란","대파"],
+    time:"10분",
+    level:"쉬움",
+    steps:[
+      "두부의 물기를 빼고 먹기 좋은 크기로 자른다.",
+      "계란을 풀고 대파를 넣는다.",
+      "두부에 계란물을 입힌다.",
+      "팬에 앞뒤로 노릇하게 부친다."
+    ]
+  },
+
+  {
+    name:"닭가슴살 양배추볶음",
+    image:"",
+    emoji:"🥬",
+    ingredients:["닭가슴살","양배추","양파","대파"],
+    time:"15분",
+    level:"쉬움",
+    steps:[
+      "양배추와 양파를 썬다.",
+      "닭가슴살을 먹기 좋은 크기로 자른다.",
+      "팬에 닭가슴살과 채소를 볶는다.",
+      "소금, 후추 또는 간장으로 간한다."
+    ]
+  },
+
+  {
+    name:"김치 두부찌개",
+    image:"",
+    emoji:"🍲",
+    ingredients:["김치","두부","대파","양파"],
+    time:"20분",
+    level:"보통",
+    steps:[
+      "김치와 양파를 냄비에 넣고 볶는다.",
+      "물을 넣고 끓인다.",
+      "두부를 넣고 5분 정도 끓인다.",
+      "대파를 넣고 간을 맞춘다."
+    ]
+  },
+
+  {
+    name:"간장 계란밥",
+    image:"",
+    emoji:"🍚",
+    ingredients:["계란","밥","대파"],
+    time:"5분",
+    level:"매우 쉬움",
+    steps:[
+      "계란을 프라이한다.",
+      "따뜻한 밥 위에 계란을 올린다.",
+      "간장과 참기름을 넣는다.",
+      "대파를 올려 비벼 먹는다."
+    ]
+  },
+
+  {
+    name:"두부 김치볶음",
+    image:"",
+    emoji:"🥘",
+    ingredients:["두부","김치","양파","대파"],
+    time:"15분",
+    level:"쉬움",
+    steps:[
+      "두부를 데치거나 구워 준비한다.",
+      "김치와 양파를 볶는다.",
+      "대파를 넣고 함께 볶는다.",
+      "두부와 함께 담아낸다."
+    ]
+  },
+
+  {
+    name:"참치 김치볶음밥",
+    image:"",
+    emoji:"🍳",
+    ingredients:["참치","김치","밥","대파","계란"],
+    time:"15분",
+    level:"쉬움",
+    steps:[
+      "대파를 볶아 향을 낸다.",
+      "김치와 참치를 넣고 볶는다.",
+      "밥을 넣고 골고루 볶는다.",
+      "마지막에 계란 프라이를 올린다."
+    ]
+  },
+
+  {
+    name:"양배추 계란전",
+    image:"",
+    emoji:"🥬",
+    ingredients:["양배추","계란","대파"],
+    time:"10분",
+    level:"쉬움",
+    steps:[
+      "양배추를 잘게 썬다.",
+      "계란과 대파를 넣고 섞는다.",
+      "팬에 한 국자씩 올린다.",
+      "앞뒤로 노릇하게 부친다."
+    ]
+  }
+
+];
+
+
+/* =====================================================
+   배달 메뉴
+===================================================== */
+
+const deliveryMenus = [
+
+  ["🍗","치킨","바삭한 치킨 + 사이드","오늘은 제대로 먹고 싶은 날"],
+
+  ["🍕","피자","피자 + 사이드 메뉴","여럿이 먹기 좋은 메뉴"],
+
+  ["🍜","중식","짜장면 또는 짬뽕 + 탕수육","든든하고 자극적인 게 당기는 날"],
+
+  ["🍣","초밥","초밥 또는 연어덮밥","깔끔하게 먹고 싶은 날"],
+
+  ["🌮","분식","떡볶이 + 튀김 + 김밥","여러 가지 조금씩 먹고 싶은 날"],
+
+  ["🍖","족발/보쌈","족발 또는 보쌈 + 막국수","푸짐하게 먹고 싶은 날"],
+
+  ["🍔","햄버거","버거 + 감자튀김","간단하고 확실하게 먹고 싶은 날"],
+
+  ["🍲","찌개/찜","김치찌개 또는 닭볶음탕","따뜻한 음식이 필요한 날"]
+
+];
+
+
+let ingredients = [];
+
+
+/* =====================================================
+   공백/대소문자 정리
+===================================================== */
+
+function normalize(value){
+
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/\s/g,"");
+
+}
+
+
+/* =====================================================
+   재료 태그 표시
+===================================================== */
+
+function renderTags(){
+
+  const box = document.getElementById("tags");
+
+  if(ingredients.length === 0){
+
+    box.innerHTML = "";
+
+    return;
+
+  }
+
+  box.innerHTML = ingredients.map((item,index)=>`
+
+    <span class="tag">
+
+      ${item}
+
+      <button
+        type="button"
+        data-remove="${index}"
+      >
+        ×
+      </button>
+
+    </span>
+
+  `).join("");
+
+}
+
+
+/* =====================================================
+   재료 추가
+===================================================== */
+
+function addIngredient(){
+
+  const input =
+    document.getElementById("ingredientInput");
+
+  const value =
+    input.value.trim();
+
+  if(!value){
+
+    input.focus();
+
+    return;
+
+  }
+
+  const values =
+    value
+      .split(",")
+      .map(item=>item.trim())
+      .filter(Boolean);
+
+
+  values.forEach(item=>{
+
+    const alreadyExists =
+      ingredients.some(
+        existing =>
+          normalize(existing) === normalize(item)
+      );
+
+    if(!alreadyExists){
+
+      ingredients.push(item);
+
+    }
+
+  });
+
+
+  input.value = "";
+
+  renderTags();
+
+  input.focus();
+
+}
+
+
+/* =====================================================
+   재료 삭제
+===================================================== */
+
+function removeIngredient(index){
+
+  ingredients.splice(index,1);
+
+  renderTags();
+
+}
+
+
+/* =====================================================
+   요리 점수
+===================================================== */
+
+function score(recipe){
+
+  const have =
+    ingredients.map(normalize);
+
+  return recipe.ingredients.filter(recipeIngredient =>
+
+    have.some(userIngredient =>
+
+      userIngredient.includes(
+        normalize(recipeIngredient)
+      )
+
+      ||
+
+      normalize(recipeIngredient).includes(
+        userIngredient
+      )
+
+    )
+
+  ).length;
+
+}
+
+
+/* =====================================================
+   부족한 재료
+===================================================== */
+
+function getMissingIngredients(recipe){
+
+  return recipe.ingredients.filter(recipeIngredient =>
+
+    !ingredients.some(userIngredient =>
+
+      normalize(userIngredient).includes(
+        normalize(recipeIngredient)
+      )
+
+      ||
+
+      normalize(recipeIngredient).includes(
+        normalize(userIngredient)
+      )
+
+    )
+
+  );
+
+}
+
+
+/* =====================================================
+   냉장고 털기
+===================================================== */
+
+function findRecipes(){
+
+  const results =
+    document.getElementById("results");
+
+  if(ingredients.length === 0){
+
+    results.innerHTML = `
+      <div class="card empty">
+        🥷 먼저 냉장고 재료를 입력해주세요!
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  closeDetail();
+
+
+  const ranked =
+    recipes
+
+      .map(recipe => ({
+
+        ...recipe,
+
+        matched:score(recipe)
+
+      }))
+
+      .filter(recipe => recipe.matched > 0)
+
+      .sort(
+        (a,b) => b.matched - a.matched
+      );
+
+
+  renderResults(
+    ranked.slice(0,6)
+  );
+
+
+  results.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+}
+
+
+/* =====================================================
+   랜덤 요리
+===================================================== */
+
+function randomRecipe(){
+
+  closeDetail();
+
+
+  const recipe =
+    recipes[
+      Math.floor(
+        Math.random() * recipes.length
+      )
+    ];
+
+
+  renderResults([recipe]);
+
+
+  document
+    .getElementById("results")
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+}
+
+
+/* =====================================================
+   검색 결과
+===================================================== */
+
 function renderResults(list){
 
-  const out = document.getElementById("results");
+  const results =
+    document.getElementById("results");
 
-  if(!list.length){
 
-    out.innerHTML = `
+  if(list.length === 0){
+
+    results.innerHTML = `
       <div class="card empty">
         🥷 털 수 있는 요리를 못 찾았어요.<br>
         재료를 조금 더 추가해보세요!
@@ -12,52 +1062,430 @@ function renderResults(list){
     `;
 
     return;
+
   }
 
-  out.innerHTML = list.map(r=>{
 
-    const missing = getMissingIngredients(r);
+  results.innerHTML =
+    list.map(recipe => {
 
-    const recipeIndex = recipes.findIndex(
-      recipe => recipe.name === r.name
-    );
+      const missing =
+        getMissingIngredients(recipe);
 
-    return `
-      <article
-        class="result"
-        onclick="openDetail(${recipeIndex})"
-        role="button"
-        tabindex="0"
-      >
 
-        <h3>
-          ${r.emoji || "🍳"} ${r.name}
-        </h3>
+      const recipeIndex =
+        recipes.indexOf(recipe);
 
-        ${
-          missing.length
-          ?
-          `<div class="result-missing">
-             🛒 부족한 재료: ${missing.join(", ")}
-           </div>`
-          :
-          `<div class="result-all">
-             🎉 필요한 재료를 모두 가지고 있어요!
-           </div>`
-        }
 
-        <div class="result-info">
-          <span>⏱️ ${r.time}</span>
-          <span>👩‍🍳 ${r.level}</span>
-        </div>
+      return `
 
-        <div class="result-arrow">
-          자세히 보기 →
-        </div>
+        <article
+          class="result"
+          data-recipe-index="${recipeIndex}"
+          role="button"
+          tabindex="0"
+        >
 
-      </article>
-    `;
+          <h3>
+            ${recipe.emoji} ${recipe.name}
+          </h3>
 
-  }).join("");
+
+          ${
+            missing.length > 0
+
+            ?
+
+            `
+            <div class="result-missing">
+              🛒 부족한 재료:
+              ${missing.join(", ")}
+            </div>
+            `
+
+            :
+
+            `
+            <div class="result-all">
+              🎉 필요한 재료를 모두 가지고 있어요!
+            </div>
+            `
+          }
+
+
+          <div class="result-info">
+
+            <span>
+              ⏱️ ${recipe.time}
+            </span>
+
+            <span>
+              👩‍🍳 ${recipe.level}
+            </span>
+
+          </div>
+
+
+          <div class="result-arrow">
+            자세히 보기 →
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
 
 }
+
+
+/* =====================================================
+   음식 상세 화면
+===================================================== */
+
+function openDetail(index){
+
+  const recipe =
+    recipes[index];
+
+  if(!recipe){
+
+    return;
+
+  }
+
+
+  document.getElementById("detailTitle").textContent =
+    recipe.emoji + " " + recipe.name;
+
+
+  document.getElementById("detailMeta").innerHTML = `
+
+    <span>
+      ⏱️ 조리시간 ${recipe.time}
+    </span>
+
+    <span>
+      👩‍🍳 난이도 ${recipe.level}
+    </span>
+
+  `;
+
+
+  document.getElementById("detailIngredients").innerHTML =
+
+    recipe.ingredients
+      .map(item=>`<li>${item}</li>`)
+      .join("");
+
+
+  document.getElementById("detailSteps").innerHTML =
+
+    recipe.steps
+      .map(step=>`<li>${step}</li>`)
+      .join("");
+
+
+  const imageBox =
+    document.getElementById("detailImage");
+
+
+  if(recipe.image){
+
+    imageBox.innerHTML = `
+
+      <img
+        src="${recipe.image}"
+        alt="${recipe.name}"
+      >
+
+    `;
+
+  }else{
+
+    imageBox.innerHTML = `
+
+      <div class="image-placeholder">
+
+        <span class="food-emoji">
+          ${recipe.emoji}
+        </span>
+
+        <p>
+          음식 사진을 준비 중이에요 📸
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+
+  document.getElementById("results").style.display =
+    "none";
+
+
+  document.getElementById("detailPage").style.display =
+    "block";
+
+
+  document
+    .getElementById("detailPage")
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+}
+
+
+/* =====================================================
+   상세 화면 닫기
+===================================================== */
+
+function closeDetail(){
+
+  document.getElementById("detailPage").style.display =
+    "none";
+
+
+  document.getElementById("results").style.display =
+    "grid";
+
+}
+
+
+/* =====================================================
+   배달 음식 추천
+===================================================== */
+
+function recommendDelivery(){
+
+  const menu =
+    deliveryMenus[
+      Math.floor(
+        Math.random() * deliveryMenus.length
+      )
+    ];
+
+
+  document.getElementById("deliveryResult").innerHTML = `
+
+    <div class="delivery-result">
+
+      <h3>
+        ${menu[0]} ${menu[1]}
+      </h3>
+
+      <p>
+        🍴 추천 메뉴: ${menu[2]}
+      </p>
+
+      <p>
+        💡 ${menu[3]}
+      </p>
+
+      <p>
+        🥷 오늘은 요리 대신 배달로 털어버립시다!
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   페이지 시작
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    const input =
+      document.getElementById("ingredientInput");
+
+
+    /* 추가 버튼 */
+
+    document
+      .getElementById("addButton")
+      .addEventListener(
+        "click",
+        addIngredient
+      );
+
+
+    /* 냉장고 털기 버튼 */
+
+    document
+      .getElementById("findButton")
+      .addEventListener(
+        "click",
+        findRecipes
+      );
+
+
+    /* 랜덤 버튼 */
+
+    document
+      .getElementById("randomButton")
+      .addEventListener(
+        "click",
+        randomRecipe
+      );
+
+
+    /* 배달 버튼 */
+
+    document
+      .getElementById("deliveryBtn")
+      .addEventListener(
+        "click",
+        recommendDelivery
+      );
+
+
+    /* 뒤로가기 버튼 */
+
+    document
+      .getElementById("backButton")
+      .addEventListener(
+        "click",
+        closeDetail
+      );
+
+
+    /* 엔터로 재료 추가 */
+
+    input.addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          addIngredient();
+
+        }
+
+      }
+    );
+
+
+    /* 재료 삭제 */
+
+    document
+      .getElementById("tags")
+      .addEventListener(
+        "click",
+        function(event){
+
+          const button =
+            event.target.closest(
+              "[data-remove]"
+            );
+
+
+          if(button){
+
+            removeIngredient(
+              Number(button.dataset.remove)
+            );
+
+          }
+
+        }
+      );
+
+
+    /* 음식 카드 클릭 */
+
+    document
+      .getElementById("results")
+      .addEventListener(
+        "click",
+        function(event){
+
+          const card =
+            event.target.closest(
+              ".result"
+            );
+
+
+          if(!card){
+
+            return;
+
+          }
+
+
+          const index =
+            Number(
+              card.dataset.recipeIndex
+            );
+
+
+          openDetail(index);
+
+        }
+      );
+
+
+    /* 키보드 접근 */
+
+    document
+      .getElementById("results")
+      .addEventListener(
+        "keydown",
+        function(event){
+
+          if(
+            event.key !== "Enter" &&
+            event.key !== " "
+          ){
+
+            return;
+
+          }
+
+
+          const card =
+            event.target.closest(
+              ".result"
+            );
+
+
+          if(!card){
+
+            return;
+
+          }
+
+
+          event.preventDefault();
+
+
+          openDetail(
+            Number(
+              card.dataset.recipeIndex
+            )
+          );
+
+        }
+      );
+
+
+    renderTags();
+
+  }
+);
+
+</script>
+
+</body>
+</html>

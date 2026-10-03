@@ -1227,11 +1227,7 @@ async function handlePollinationsCallback(){
   );
 
 
-  if(currentRecipe){
 
-   generateFoodImage(currentRecipe);
-
-  }
 
  }catch(error){
 
@@ -1276,22 +1272,13 @@ async function generateFoodImage(recipe){
      AI로 만들어볼까요?
     </p>
 
-    <button
-     type="button"
-     id="aiLoginButton"
-    >
-     🤖 AI 음식 사진 만들기
-    </button>
+ 
 
    </div>
 
   `;
 
-  document
-   .getElementById("aiLoginButton")
-   .onclick=
-   startPollinationsLogin;
-
+ 
   return;
 
  }

@@ -1314,19 +1314,33 @@ async function generateFoodImage(recipe){
  `;
 
 
- const prompt=
- `Photorealistic Korean home-cooked food photography of ${recipe.name}.
- Beautifully plated on a clean ceramic plate,
- warm natural lighting,
- appetizing,
- realistic ingredients,
- Korean home meal style,
- close-up food photography,
- no people,
- no text,
- no letters,
- no watermark.`;
+const prompt=
+`Photorealistic Korean food photography.
 
+The food MUST match this exact dish description:
+${recipe.imagePrompt}
+
+Show only this single dish.
+The shape, ingredients, color and cooking method must clearly match the description.
+
+Do not substitute this dish with another Korean food.
+Do not add ingredients that are not described.
+No noodles.
+No pasta.
+No unrelated vegetables.
+No chicken unless specifically described.
+No soup unless specifically described.
+No fried rice unless specifically described.
+No other dishes.
+No people.
+No text.
+No letters.
+No watermark.
+
+Beautifully plated on a simple ceramic plate,
+warm natural lighting,
+realistic Korean home cooking,
+appetizing close-up food photography.`;
  try{
 
   const url=

@@ -336,6 +336,38 @@ button{
 
 
 
+.shopping-list{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+}
+
+.shopping-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 14px;
+  background:#fff7e8;
+  border:1px solid var(--line);
+  border-radius:15px;
+  font-size:15px;
+}
+
+.shopping-item input{
+  flex:0 0 auto;
+  width:18px;
+  height:18px;
+  accent-color:var(--accent);
+}
+
+.shopping-empty{
+  padding:18px;
+  text-align:center;
+  background:#f7f2ea;
+  border-radius:16px;
+  color:var(--muted);
+}
+
 @media(max-width:520px){
 
   h1{
@@ -460,6 +492,17 @@ button{
 
 </section>
 
+<section id="shoppingPage" class="detail-page">
+  <div class="detail-card">
+    <div class="detail-content">
+      <h2 class="detail-title">🛒 장보기</h2>
+      <p class="help">선택한 요리에 필요한 재료를 확인할 수 있어요.</p>
+      <div id="shoppingList" class="shopping-list"></div>
+      <button type="button" id="shoppingBackButton" class="back-button">← 냉장고털이범으로 돌아가기</button>
+    </div>
+  </div>
+</section>
+
 </main>
 
 
@@ -481,7 +524,6 @@ const recipes=[
  ingredients:["참치","계란","양파","대파"],
  time:"10분",
  level:"쉬움",
- imagePrompt:"한국식 참치 계란볶음. 참치와 부드럽게 익힌 계란을 양파와 대파와 함께 팬에서 볶은 가정식 반찬. 노란 계란 조각과 참치가 뚜렷하게 보이고 잘게 썬 양파와 초록색 대파가 섞여 있다. 국물 없이 촉촉한 볶음 요리. 흰색 접시에 먹음직스럽게 담겨 있다. 면이나 국수 없음. 닭고기 없음. 볶음밥 없음. 찌개 없음. 다른 음식은 없음.",
  steps:[
   "계란을 풀어준다.",
   "양파와 대파를 먹기 좋게 썬다.",
@@ -497,7 +539,6 @@ const recipes=[
  ingredients:["두부","계란","대파"],
  time:"10분",
  level:"쉬움",
- imagePrompt:"한국식 두부 계란부침. 두부를 먹기 좋은 직사각형 또는 네모난 조각으로 잘라 계란물을 입힌 뒤 프라이팬에 노릇하게 부친 음식. 각각의 두부 조각에 노란 계란옷이 입혀져 있고 표면은 황금빛으로 구워져 있다. 잘게 썬 초록색 대파가 계란옷에 조금씩 보인다. 접시에 여러 개의 두부 계란부침이 가지런히 담겨 있다. 국물 없음. 면 없음. 국수 없음. 볶음밥 없음. 닭고기 없음.",
  steps:[
   "두부의 물기를 빼고 먹기 좋은 크기로 자른다.",
   "계란을 풀고 대파를 넣는다.",
@@ -512,7 +553,6 @@ const recipes=[
  ingredients:["닭가슴살","양배추","양파","대파"],
  time:"15분",
  level:"쉬움",
- imagePrompt:"한국식 닭가슴살 양배추볶음. 한입 크기로 자른 흰색 닭가슴살 조각과 얇게 썬 양배추, 양파, 대파를 프라이팬에서 함께 볶은 가정식 요리. 닭가슴살 조각이 확실하게 보이고 양배추가 부드럽게 볶아져 있다. 국물 없는 볶음 요리이며 접시에 소복하게 담겨 있다. 면이나 국수 없음. 계란 없음. 볶음밥 없음. 찌개 없음. 돼지고기 없음.",
  steps:[
   "양배추와 양파를 썬다.",
   "닭가슴살을 먹기 좋은 크기로 자른다.",
@@ -527,7 +567,6 @@ const recipes=[
  ingredients:["김치","두부","대파","양파"],
  time:"20분",
  level:"보통",
- imagePrompt:"한국식 김치 두부찌개. 빨갛고 얼큰한 김치 국물이 가득한 한국식 찌개. 잘 익은 배추김치 조각과 하얀 두부 큐브가 국물 안에 여러 개 들어 있고 위에 초록색 대파가 올라가 있다. 뚝배기 또는 작은 검은 냄비에 뜨겁게 끓여낸 모습. 국물이 충분히 보이는 찌개 요리. 볶음 요리 아님. 면 없음. 국수 없음. 볶음밥 없음. 닭고기 없음.",
  steps:[
   "김치와 양파를 냄비에 넣고 볶는다.",
   "물을 넣고 끓인다.",
@@ -542,7 +581,6 @@ const recipes=[
  ingredients:["계란","밥","대파"],
  time:"5분",
  level:"매우 쉬움",
- imagePrompt:"한국식 간장 계란밥. 따뜻하고 하얀 흰쌀밥을 밥그릇에 담고 그 위에 노릇하게 익힌 계란후라이 한 개가 올라가 있다. 계란 노른자는 가운데에 선명하게 보이고 간장과 참기름을 밥에 살짝 뿌린 모습. 잘게 썬 초록색 대파가 위에 조금 올라가 있다. 매우 단순한 한국 가정식 한 그릇 음식. 볶음밥 아님. 면 없음. 국수 없음. 닭고기 없음. 김치 없음. 여러 음식이 함께 담긴 한상차림 아님.",
  steps:[
   "계란을 프라이한다.",
   "따뜻한 밥 위에 계란을 올린다.",
@@ -557,7 +595,6 @@ const recipes=[
  ingredients:["두부","김치","양파","대파"],
  time:"15분",
  level:"쉬움",
- imagePrompt:"한국식 두부 김치볶음. 하얗고 부드러운 두부를 큼직한 직사각형 조각으로 썰어 접시에 담고, 옆에 빨갛게 볶은 배추김치와 양파가 함께 담겨 있다. 김치는 윤기가 나고 잘 볶아져 있으며 초록색 대파가 조금 보인다. 두부와 빨간 김치의 색깔 대비가 뚜렷한 한국 가정식 반찬. 국물 없음. 면 없음. 국수 없음. 볶음밥 없음. 닭고기 없음.",
  steps:[
   "두부를 데치거나 구워 준비한다.",
   "김치와 양파를 볶는다.",
@@ -572,7 +609,6 @@ const recipes=[
  ingredients:["참치","김치","밥","대파","계란"],
  time:"15분",
  level:"쉬움",
- imagePrompt:"한국식 참치 김치볶음밥. 흰쌀밥을 배추김치와 참치와 함께 팬에서 볶아 붉은색과 주황색을 띠는 볶음밥. 밥알 하나하나가 보이고 잘게 썬 김치와 참치가 밥 사이에 섞여 있다. 위에는 노릇하게 익힌 계란후라이 한 개가 올라가 있고 초록색 대파가 조금 보인다. 접시에 담긴 한국식 볶음밥 한 그릇. 면 없음. 국수 없음. 찌개 없음. 닭고기 없음. 일반 흰밥만 있는 음식 아님.",
  steps:[
   "대파를 볶아 향을 낸다.",
   "김치와 참치를 넣고 볶는다.",
@@ -587,7 +623,6 @@ const recipes=[
  ingredients:["양배추","계란","대파"],
  time:"10분",
  level:"쉬움",
- imagePrompt:"한국식 양배추 계란전. 잘게 채 썬 양배추와 계란물을 섞어서 프라이팬에 둥글고 납작하게 부친 한국식 전. 전의 표면은 노릇한 황금빛이고 가장자리는 살짝 바삭하게 익어 있다. 노란 계란 사이로 잘게 썬 양배추와 초록색 대파 조각이 선명하게 보인다. 흰색 접시에 둥글고 납작한 양배추 계란전 2~3장이 담겨 있다. 이것은 절대 볶음밥이나 볶음요리가 아니다. 면 없음. 국수 없음. 닭고기 없음. 당근 없음. 찌개 없음. 고기 없음. 다른 음식 없음.",
  steps:[
   "양배추를 잘게 썬다.",
   "계란과 대파를 넣고 섞는다.",
@@ -856,6 +891,9 @@ function openDetail(index){
  if(!recipe)return;
 
  currentRecipe=recipe;
+ document.getElementById("shoppingPage").style.display="none";
+ document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active"));
+ document.querySelector(".nav-tab").classList.add("active");
 
 
  document
@@ -920,6 +958,9 @@ function openDetail(index){
 function closeDetail(){
 
  currentRecipe=null;
+ document.getElementById("shoppingPage").style.display="none";
+ document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active"));
+ document.querySelector(".nav-tab").classList.add("active");
 
  document
  .getElementById("detailPage")
@@ -929,6 +970,39 @@ function closeDetail(){
  .getElementById("results")
  .style.display="grid";
 
+}
+
+
+/* =========================================================
+   장보기 화면
+========================================================= */
+
+function openShopping(){
+
+ document.getElementById("detailPage").style.display="none";
+ document.getElementById("results").style.display="none";
+ document.getElementById("shoppingPage").style.display="block";
+
+ const list=document.getElementById("shoppingList");
+
+ if(!currentRecipe){
+  list.innerHTML='<div class="shopping-empty">🥕 먼저 요리를 검색하거나 아무거나 털어줘에서 요리를 선택해주세요.</div>';
+ }else{
+  const missing=getMissingIngredients(currentRecipe);
+  list.innerHTML=missing.length
+   ? missing.map(item=>`<label class="shopping-item"><input type="checkbox"> 🛒 ${item}</label>`).join("")
+   : '<div class="shopping-empty">🎉 이 요리는 필요한 재료를 모두 가지고 있어요!</div>';
+ }
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function closeShopping(){
+ document.getElementById("shoppingPage").style.display="none";
+ document.getElementById("results").style.display="grid";
+ document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active"));
+ document.querySelector(".nav-tab").classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 
@@ -957,10 +1031,34 @@ document.addEventListener(
 
 
   document
+   .getElementById("randomButton")
+   .addEventListener(
+    "click",
+    randomRecipe
+   );
+
+
+  document
+   .getElementById("shoppingTab")
+   .addEventListener(
+    "click",
+    openShopping
+   );
+
+
+  document
    .getElementById("backButton")
    .addEventListener(
     "click",
     closeDetail
+   );
+
+
+  document
+   .getElementById("shoppingBackButton")
+   .addEventListener(
+    "click",
+    closeShopping
    );
 
 
@@ -1056,8 +1154,6 @@ document.addEventListener(
 
   renderTags();
 
-
-  await handlePollinationsCallback();
 
  }
 );

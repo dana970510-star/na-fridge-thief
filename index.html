@@ -232,6 +232,9 @@ button{
   margin-top:10px;
 }
 
+.favorite-button{width:100%;margin-top:12px;background:#fff0cf;color:#704600;}
+.favorite-button.active{background:#ffe0df;color:#c04b45;}
+
 .detail-page{
   display:none;
   margin-top:20px;
@@ -415,7 +418,8 @@ button{
   </p>
 
   <div class="nav-tabs">
-    <button type="button" class="nav-tab active">🍳 냉장고털이범</button>
+    <button type="button" class="nav-tab active" id="homeTab">🍳 냉장고털이범</button>
+    <button type="button" class="nav-tab" id="favoritesTab">❤️ 찜한 요리</button>
     <button type="button" class="nav-tab" id="shoppingTab">🛒 장보기</button>
   </div>
 </section>
@@ -456,6 +460,7 @@ button{
 
       <div id="detailMeta" class="detail-meta"></div>
 
+      <button type="button" id="detailFavoriteButton" class="favorite-button">♡ 찜하기</button>
 
       <div class="detail-section">
 
@@ -490,6 +495,15 @@ button{
 
   </div>
 
+</section>
+
+<section id="favoritesPage" class="detail-page">
+  <div class="detail-card"><div class="detail-content">
+    <h2 class="detail-title">❤️ 찜한 요리</h2>
+    <p class="help">찜해둔 요리를 모아볼 수 있어요.</p>
+    <div id="favoritesList" class="results"></div>
+    <button type="button" id="favoritesBackButton" class="back-button">← 냉장고털이범으로 돌아가기</button>
+  </div></div>
 </section>
 
 <section id="shoppingPage" class="detail-page">
@@ -636,6 +650,7 @@ const recipes=[
 let ingredients=[];
 
 let currentRecipe=null;
+let favorites=JSON.parse(localStorage.getItem("fridgeThiefFavorites") || "[]");
 
 
 /* =========================================================
@@ -759,6 +774,14 @@ function getMissingIngredients(recipe){
 }
 
 
+function isFavorite(recipe){ return favorites.some(x=>x.name===recipe.name); }
+function saveFavorites(){ localStorage.setItem("fridgeThiefFavorites",JSON.stringify(favorites)); }
+function toggleFavorite(recipe){ if(!recipe)return; if(isFavorite(recipe)){favorites=favorites.filter(x=>x.name!==recipe.name);}else{favorites.push(recipe);} saveFavorites(); updateFavoriteButton(); renderFavorites(); renderResults(Array.from(document.querySelectorAll(".result")).map(el=>recipes[Number(el.dataset.index)]).filter(Boolean)); }
+function updateFavoriteButton(){ const btn=document.getElementById("detailFavoriteButton"); if(!btn||!currentRecipe)return; const active=isFavorite(currentRecipe); btn.textContent=active?"♥ 찜 완료":"♡ 찜하기"; btn.classList.toggle("active",active); }
+function renderFavorites(){ const box=document.getElementById("favoritesList"); if(!box)return; if(!favorites.length){box.innerHTML='<div class="card empty">❤️ 아직 찜한 요리가 없어요.</div>';return;} box.innerHTML=favorites.map(recipe=>{const index=recipes.findIndex(r=>r.name===recipe.name);return `<article class="result" data-index="${index}" tabindex="0"><h3>${recipe.emoji} ${recipe.name}</h3><div class="result-info"><span>⏱️ ${recipe.time}</span><span>👩‍🍳 ${recipe.level}</span></div><button type="button" class="favorite-button active" data-favorite-index="${index}">♥ 찜 완료</button><div class="result-arrow">자세히 보기 →</div></article>`;}).join(""); }
+function openFavorites(){ document.getElementById("detailPage").style.display="none"; document.getElementById("shoppingPage").style.display="none"; document.getElementById("results").style.display="none"; document.getElementById("favoritesPage").style.display="block"; document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active")); document.getElementById("favoritesTab").classList.add("active"); renderFavorites(); window.scrollTo({top:0,behavior:"smooth"}); }
+function closeFavorites(){ document.getElementById("favoritesPage").style.display="none"; document.getElementById("results").style.display="grid"; document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active")); document.getElementById("homeTab").classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
+
 /* =========================================================
    요리 검색
 ========================================================= */
@@ -867,6 +890,8 @@ function renderResults(list){
 
    </div>
 
+   <button type="button" class="favorite-button ${isFavorite(recipe)?"active":""}" data-favorite-index="${index}">${isFavorite(recipe)?"♥ 찜 완료":"♡ 찜하기"}</button>
+
    <div class="result-arrow">
     자세히 보기 →
    </div>
@@ -892,6 +917,7 @@ function openDetail(index){
 
  currentRecipe=recipe;
  document.getElementById("shoppingPage").style.display="none";
+ document.getElementById("favoritesPage").style.display="none";
  document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active"));
  document.querySelector(".nav-tab").classList.add("active");
 
@@ -916,6 +942,8 @@ function openDetail(index){
 
  `;
 
+
+ updateFavoriteButton();
 
  document
  .getElementById("detailIngredients")
@@ -959,6 +987,7 @@ function closeDetail(){
 
  currentRecipe=null;
  document.getElementById("shoppingPage").style.display="none";
+ document.getElementById("favoritesPage").style.display="none";
  document.querySelectorAll(".nav-tab").forEach(btn=>btn.classList.remove("active"));
  document.querySelector(".nav-tab").classList.add("active");
 
@@ -1038,6 +1067,11 @@ document.addEventListener(
    );
 
 
+  document.getElementById("favoritesTab").addEventListener("click",openFavorites);
+  document.getElementById("homeTab").addEventListener("click",closeFavorites);
+  document.getElementById("detailFavoriteButton").addEventListener("click",()=>toggleFavorite(currentRecipe));
+  document.getElementById("favoritesBackButton").addEventListener("click",closeFavorites);
+
   document
    .getElementById("shoppingTab")
    .addEventListener(
@@ -1109,6 +1143,11 @@ document.addEventListener(
     "click",
     e=>{
 
+     const favoriteButton=e.target.closest("[data-favorite-index]");
+     if(favoriteButton){ e.stopPropagation(); toggleFavorite(recipes[Number(favoriteButton.dataset.favoriteIndex)]); return; }
+
+     if(e.target.closest("[data-favorite-index]"))return;
+
      const card=
      e.target.closest(".result");
 
@@ -1123,6 +1162,13 @@ document.addEventListener(
     }
   );
 
+
+  document.getElementById("favoritesList").addEventListener("click",e=>{
+    const favoriteButton=e.target.closest("[data-favorite-index]");
+    if(favoriteButton){e.stopPropagation();toggleFavorite(recipes[Number(favoriteButton.dataset.favoriteIndex)]);return;}
+    const card=e.target.closest(".result");
+    if(card)openDetail(Number(card.dataset.index));
+  });
 
   document
    .getElementById("results")
@@ -1153,6 +1199,7 @@ document.addEventListener(
 
 
   renderTags();
+  renderFavorites();
 
 
  }
